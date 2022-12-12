@@ -31,6 +31,8 @@ def read_file(fname):
 def part_1(data):
     heights, start, end = data
     visited = set()
+    todo = set()
+    todo.add(start)
     current = start
     steps = 0
     queue = []
@@ -41,6 +43,7 @@ def part_1(data):
         if current in visited:
             continue
         visited.add(current)
+        todo.remove(current)
         x, y = current
         height = heights[x][y]
         for xs, ys in dirs:
@@ -50,13 +53,14 @@ def part_1(data):
                 continue
             if next_x < 0 or next_x >= len(heights):
                 continue
-            if (next_x, next_y) in visited:
+            if (next_x, next_y) in visited or (next_x, next_y) in todo:
                 continue
             next_height = heights[next_x][next_y]
             if next_height - height > 1:
                 continue
             next_steps = steps + 1
             heappush(queue, (next_steps, (next_x, next_y)))
+            todo.add((next_x, next_y))
     return steps
 
 
@@ -64,6 +68,8 @@ def part_2(data):
     # invert logic, start at end and find shortest path to any low point
     heights, _, end = data
     visited = set()
+    todo = set()
+    todo.add(end)
     current = end
     steps = 0
     queue = []
@@ -74,6 +80,7 @@ def part_2(data):
         if current in visited:
             continue
         visited.add(current)
+        todo.remove(current)
         x, y = current
         height = heights[x][y]
         if height == 0:
@@ -85,13 +92,14 @@ def part_2(data):
                 continue
             if next_x < 0 or next_x >= len(heights):
                 continue
-            if (next_x, next_y) in visited:
+            if (next_x, next_y) in visited or (next_x, next_y) in todo:
                 continue
             next_height = heights[next_x][next_y]
             if next_height - height < -1:
                 continue
             next_steps = steps + 1
             heappush(queue, (next_steps, (next_x, next_y)))
+            todo.add((next_x, next_y))
 
 
 def main(fname):
