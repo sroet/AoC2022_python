@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # exclude personal input files
-*/input
+*/*input
