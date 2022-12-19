@@ -77,10 +77,17 @@ def rec_dfs(
     new_components = tuple(c + p for c, p in zip(components, production))
     # do nothing
     options.append((new_time, new_components, production, blueprint))
+    costs = [i[0] for i in blueprint.values()]
+    costs += [(0, 0, 0, float("inf"))]
+    max_cost = list(max(i) for i in zip(*costs))
+
     for cost, prod in blueprint.values():
         if all(i <= j for i, j in zip(cost, components)):
             components_after_build = tuple(j - i for i, j in zip(cost, new_components))
             new_production = tuple(i + j for i, j in zip(prod, production))
+            if any(i > j for i, j in zip(new_production, max_cost)):
+                # more production than can be consumed
+                continue
             options.append(
                 (time - 1, components_after_build, new_production, blueprint)
             )
