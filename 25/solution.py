@@ -1,8 +1,5 @@
 import argparse
 import time as t
-from collections import deque
-import itertools
-from heapq import heappush, heappop
 
 
 def read_file(fname):
@@ -40,7 +37,6 @@ def add_one(data):
 
 
 def parts(data):
-    out_vals = []
     current_root = 0
     while data // (5**current_root) != 0:
         current_root += 1
